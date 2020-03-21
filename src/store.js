@@ -3,7 +3,11 @@ import React from "react";
 export const Reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_RAW_DATA":
-      return { ...state, rawData: action.payload };
+      let data = action.payload
+        .split(/[\n,]/)
+        .filter(Number)
+        .map(v => parseFloat(v));
+      return { ...state, rawData: action.payload, data: data };
     case "UPDATE_LSL":
       return { ...state, lsl: action.payload };
     case "UPDATE_USL":
@@ -14,7 +18,8 @@ export const Reducer = (state, action) => {
 };
 
 const initialState = {
-  rawData: ""
+  rawData: "",
+  data: []
 };
 
 const Store = ({ children }) => {

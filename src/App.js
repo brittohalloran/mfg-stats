@@ -8,10 +8,8 @@ function App() {
   return (
     <Store>
       <div className="container pt-4">
-        <div className="row">
-          <InputArea />
-          <DistributionAnalysis />
-        </div>
+        <InputArea />
+        <DistributionAnalysis />
       </div>
     </Store>
   );
