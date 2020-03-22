@@ -41,7 +41,7 @@ function InputArea() {
                   onChange={e => {
                     handleFormChange("UPDATE_LSL", e.target.value);
                   }}
-                  value={state.lsl}
+                  value={state.lsl || ""}
                 />
               </div>
               <div className="form-group">
@@ -51,7 +51,7 @@ function InputArea() {
                   onChange={e => {
                     handleFormChange("UPDATE_USL", e.target.value);
                   }}
-                  value={state.usl}
+                  value={state.usl || ""}
                 />
               </div>
             </div>

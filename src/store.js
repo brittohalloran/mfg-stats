@@ -9,9 +9,9 @@ export const Reducer = (state, action) => {
         .map(v => parseFloat(v));
       return { ...state, rawData: action.payload, data: data };
     case "UPDATE_LSL":
-      return { ...state, lsl: action.payload };
+      return { ...state, lsl: action.payload === "" ? null : action.payload };
     case "UPDATE_USL":
-      return { ...state, usl: action.payload };
+      return { ...state, usl: action.payload === "" ? null : action.payload };
     default:
       return state;
   }
@@ -19,7 +19,9 @@ export const Reducer = (state, action) => {
 
 const initialState = {
   rawData: "",
-  data: []
+  data: [],
+  lsl: null,
+  usl: null
 };
 
 const Store = ({ children }) => {
