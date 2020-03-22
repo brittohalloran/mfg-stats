@@ -40,7 +40,7 @@ function DistributionAnalysis() {
           <div className="col-md-6">
             <h5>Capability to Spec</h5>
             <p className="mb-0 text-mono">
-              Data: {state.data ? state.data.join(", ") : null} (n ={" "}
+              Data: {state.data ? state.data.sort().join(", ") : null} (n ={" "}
               {state.data ? state.data.length : 0})
             </p>
             <p className="mb-0">
