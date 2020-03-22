@@ -10,11 +10,11 @@ function InputArea() {
 
   return (
     <div className="row">
-      <div className="col-12">
+      <div className="col-md-12">
         <h3 className="text-uppercase font-weight-bold">Input</h3>
         <form>
           <div className="row">
-            <div className="col-4">
+            <div className="col-md-4">
               <div className="form-group">
                 <label>
                   Raw data
@@ -33,7 +33,7 @@ function InputArea() {
                 />
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-md-4">
               <div className="form-group">
                 <label>Lower Spec Limit</label>
                 <input
@@ -55,7 +55,7 @@ function InputArea() {
                 />
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-md-4">
               <div className="form-group">
                 <label>Confidence Level</label>
                 <input className="form-control" />
