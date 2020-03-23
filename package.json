@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "d3": "^5.15.0",
+    "jstat": "^1.9.2",
     "mathjs": "^6.6.1",
     "plotly.js": "^1.52.3",
     "react": "^16.13.0",

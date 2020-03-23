@@ -10,8 +10,8 @@ function InputArea() {
 
   return (
     <div className="row">
-      <div className="col-md-12">
-        <h3 className="text-uppercase font-weight-bold">Input</h3>
+      <div className="col-md-12  bg-white pt-3 shadow-lg pb-3">
+        <h4 className="text-uppercase font-weight-bold">Input</h4>
         <form>
           <div className="row">
             <div className="col-md-4">
