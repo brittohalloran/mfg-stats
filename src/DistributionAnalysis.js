@@ -8,18 +8,34 @@ function DistributionAnalysis() {
   const ctx = React.useContext(Context);
   const state = ctx[0];
 
-  let limitLines = [state.lsl, state.usl].map(v => {
-    return v
-      ? {
+  let limitLines = [];
+  let annotations = [];
+  [state.lsl, state.usl].forEach(v => {
+    if (v) {
+      limitLines = limitLines.concat([
+        {
           type: "line",
           x0: v,
           x1: v,
           y0: 0,
           y1: 0.9,
+          xref: "x",
           yref: "paper",
           line: { color: "#cc4125" }
         }
-      : null;
+      ]);
+      annotations = annotations.concat([
+        {
+          x: v,
+          y: 0.95,
+          xref: "x",
+          yref: "paper",
+          text: v,
+          showarrow: false,
+          font: { color: "#cc4125" }
+        }
+      ]);
+    }
   });
 
   let [x, q] = quantiles(state.data);
@@ -48,8 +64,8 @@ function DistributionAnalysis() {
                 plot_bgcolor: "#f5f5f5",
                 width: 540,
 
-                margin: { l: 40, r: 20, b: 30, t: 20 },
-                xaxis: { zeroline: false },
+                margin: { l: 40, r: 20, b: 40, t: 20 },
+                xaxis: { zeroline: false, title: "Theoretical Quantiles" },
                 yaxis: { zeroline: false }
               }}
               config={{ displaylogo: false }}
@@ -57,7 +73,6 @@ function DistributionAnalysis() {
           </div>
           <div className="col-md-6">
             <h5 className="text-center">Capability Study</h5>
-
             <Plot
               data={[
                 {
@@ -73,6 +88,7 @@ function DistributionAnalysis() {
                 width: 540,
                 margin: { l: 30, r: 20, b: 30, t: 20 },
                 shapes: limitLines,
+                annotations: annotations,
                 xaxis: { rangemode: "nonnegative" },
                 yaxis: { rangemode: "nonnegative" }
               }}

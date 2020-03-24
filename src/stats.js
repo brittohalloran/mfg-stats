@@ -23,14 +23,11 @@ export const uniform_order_statistic_medians = n => {
 
 export const quantiles = a => {
   // Calculate the theoretical quantiles of the normal distribution
-  console.log("a", a);
   a.sort((a, b) => a - b);
   const os = uniform_order_statistic_medians(a.length);
   const q = os.map(v => {
     let n = normal.inv(v, 0, 1);
-    console.log(n);
     return n;
   });
-  console.log(a, os, q);
   return [a, q];
 };
