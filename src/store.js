@@ -3,11 +3,12 @@ import React from "react";
 export const Reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_RAW_DATA":
-      let data = action.payload
-        .split(/[\n,]/)
+      let rawData = action.payload.replace(/[^0-9.,\n\t ]/g, "");
+      let data = rawData
+        .split(/[\n\t, ]/)
         .filter(Number)
         .map(v => parseFloat(v));
-      return { ...state, rawData: action.payload, data: data };
+      return { ...state, rawData: rawData, data: data };
     case "UPDATE_LSL":
       return { ...state, lsl: action.payload === "" ? null : action.payload };
     case "UPDATE_USL":

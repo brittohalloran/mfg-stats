@@ -3,8 +3,7 @@ body {
   font-family: "IBM Plex Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e2e6ee;
-  color: #181818;
+  color: #272727;
 }
 
 code {
@@ -15,3 +14,11 @@ code {
 .text-mono {
   font-family: "IBM Plex Mono", monospace;
 }
+
+/* 
+Raisin Black #272727
+Trident Red #cc4125
+Light Blue #afd3e7
+Independence #4A4E69
+Deep Lemon #F3B61F
+ */

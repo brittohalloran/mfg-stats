@@ -8,7 +8,7 @@ function DistributionAnalysis() {
   const ctx = React.useContext(Context);
   const state = ctx[0];
 
-  let shapes = [state.lsl, state.usl].map(v => {
+  let limitLines = [state.lsl, state.usl].map(v => {
     return v
       ? {
           type: "line",
@@ -17,7 +17,7 @@ function DistributionAnalysis() {
           y0: 0,
           y1: 0.9,
           yref: "paper",
-          line: { color: "red" }
+          line: { color: "#cc4125" }
         }
       : null;
   });
@@ -25,7 +25,7 @@ function DistributionAnalysis() {
   let [x, q] = quantiles(state.data);
   return (
     <div className="row mt-4">
-      <div className="col-12 bg-white pt-3 shadow-lg pb-3">
+      <div className="col-12">
         <h4 className="text-uppercase font-weight-bold">
           Distribution Analysis
         </h4>
@@ -39,13 +39,18 @@ function DistributionAnalysis() {
                   mode: "markers",
                   x: q,
                   y: x,
-                  marker: { color: "rgba(0,0,0,0.3)" }
+                  marker: { color: "#A0C0D2" }
                 }
               ]}
               layout={{
                 autosize: false,
+                paper_bgcolor: "#f5f5f5",
+                plot_bgcolor: "#f5f5f5",
                 width: 540,
-                margin: { l: 30, r: 20, b: 30, t: 20 }
+
+                margin: { l: 40, r: 20, b: 30, t: 20 },
+                xaxis: { zeroline: false },
+                yaxis: { zeroline: false }
               }}
               config={{ displaylogo: false }}
             />
@@ -58,14 +63,18 @@ function DistributionAnalysis() {
                 {
                   type: "histogram",
                   x: state.data,
-                  marker: { color: "rgba(0,0,0,0.3)" }
+                  marker: { color: "#afd3e7" }
                 }
               ]}
               layout={{
                 autosize: false,
+                paper_bgcolor: "#f5f5f5",
+                plot_bgcolor: "#f5f5f5",
                 width: 540,
                 margin: { l: 30, r: 20, b: 30, t: 20 },
-                shapes: shapes
+                shapes: limitLines,
+                xaxis: { rangemode: "nonnegative" },
+                yaxis: { rangemode: "nonnegative" }
               }}
               config={{ displaylogo: false }}
             />
