@@ -90,7 +90,8 @@ function DistributionAnalysis() {
                 shapes: limitLines,
                 annotations: annotations,
                 xaxis: { rangemode: "nonnegative" },
-                yaxis: { rangemode: "nonnegative" }
+                yaxis: { rangemode: "nonnegative" },
+                datarevision: state.datarevision
               }}
               config={{ displaylogo: false }}
             />

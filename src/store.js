@@ -8,11 +8,24 @@ export const Reducer = (state, action) => {
         .split(/[\n\t, ]/)
         .filter(Number)
         .map(v => parseFloat(v));
-      return { ...state, rawData: rawData, data: data };
+      return {
+        ...state,
+        rawData: rawData,
+        data: data,
+        datarevision: state.datarevision + 1
+      };
     case "UPDATE_LSL":
-      return { ...state, lsl: action.payload === "" ? null : action.payload };
+      return {
+        ...state,
+        lsl: action.payload === "" ? null : action.payload,
+        datarevision: state.datarevision + 1
+      };
     case "UPDATE_USL":
-      return { ...state, usl: action.payload === "" ? null : action.payload };
+      return {
+        ...state,
+        usl: action.payload === "" ? null : action.payload,
+        datarevision: state.datarevision + 1
+      };
     default:
       return state;
   }
@@ -22,7 +35,8 @@ const initialState = {
   rawData: "",
   data: [],
   lsl: null,
-  usl: null
+  usl: null,
+  datarevision: 0
 };
 
 const Store = ({ children }) => {
