@@ -6,8 +6,8 @@ export const Reducer = (state, action) => {
       let rawData = action.payload.replace(/[^0-9.,\n\t ]/g, "");
       let data = rawData
         .split(/[\n\t, ]/)
-        .filter(Number)
-        .map(v => parseFloat(v));
+        .map(v => parseFloat(v))
+        .filter(v => !isNaN(v));
       return {
         ...state,
         rawData: rawData,
