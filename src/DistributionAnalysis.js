@@ -138,6 +138,10 @@ function DistributionAnalysis() {
               </thead>
               <tbody>
                 <tr>
+                  <td>n</td>
+                  <td>{state.data.length}</td>
+                </tr>
+                <tr>
                   <td style={{ width: "40%" }}>Mean</td>
                   <td>
                     {state.data.length > 0
