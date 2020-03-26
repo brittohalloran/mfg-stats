@@ -2,7 +2,7 @@ import React from "react";
 import { Context } from "./store";
 import { mean, std, format } from "mathjs";
 import Plot from "react-plotly.js";
-import { cpk, quantiles } from "./stats";
+import { cpk, quantiles, shapiroWilk } from "./stats";
 
 function DistributionAnalysis() {
   const ctx = React.useContext(Context);
@@ -39,6 +39,7 @@ function DistributionAnalysis() {
   });
 
   let [x, q] = quantiles(state.data);
+  const shapiroWilkP = state.data.length > 3 ? shapiroWilk(state.data) : null;
   return (
     <div className="row mt-4">
       <div className="col-12">
@@ -78,12 +79,15 @@ function DistributionAnalysis() {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ width: "40%" }}>Anderson-Darling</td>
-                  <td></td>
-                </tr>
-                <tr>
                   <td>Shapiro-Wilk</td>
-                  <td></td>
+                  <td>
+                    {shapiroWilkP ? (
+                      <span>
+                        p = {shapiroWilkP.toFixed(3)} (
+                        {shapiroWilkP < 0.05 ? "not " : null}normal)
+                      </span>
+                    ) : null}
+                  </td>
                 </tr>
               </tbody>
             </table>

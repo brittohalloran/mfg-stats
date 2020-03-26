@@ -7,8 +7,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: "IBM Plex Mono", monospace;
+  color: #4d4d4d;
 }
 
 .text-mono {
