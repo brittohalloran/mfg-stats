@@ -34,6 +34,12 @@ export const quantiles = a => {
 };
 
 export const shapiroWilk = x => {
+  /* 
+  Perform a Shapiro-Wilk normality test and return the normal probability p, in the 
+  range (0,1). In most cases a threshold of 0.05 will be used
+  
+  */
+
   const n = x.length;
   const w = ShapiroWilkW(x);
 

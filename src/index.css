@@ -8,7 +8,7 @@ body {
 
 code {
   font-family: "IBM Plex Mono", monospace;
-  color: #4d4d4d;
+  color: #cc4125;
 }
 
 .text-mono {
@@ -19,6 +19,15 @@ code {
 Raisin Black #272727
 Trident Red #cc4125
 Light Blue #afd3e7
-Independence #4A4E69
+Independence (dark purple) #4A4E69
 Deep Lemon #F3B61F
  */
+
+.text-link {
+  cursor: pointer;
+  color: #007bff;
+}
+.text-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

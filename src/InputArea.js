@@ -19,6 +19,11 @@ function InputArea() {
     dispatch({ type: "UPDATE_LSL", payload: 4 });
     dispatch({ type: "UPDATE_USL", payload: 9 });
   };
+  const clearData = () => {
+    dispatch({ type: "UPDATE_RAW_DATA", payload: "" });
+    dispatch({ type: "UPDATE_LSL", payload: "" });
+    dispatch({ type: "UPDATE_USL", payload: "" });
+  };
 
   return (
     <div className="row">
@@ -34,16 +39,14 @@ function InputArea() {
                   <small className="font-italic">
                     Paste one dataset directly from Excel. Either one datapoint
                     per line or comma separated.{" "}
-                    <a
-                      role="button"
-                      href="#"
-                      className=""
+                    <span
+                      className="text-link"
                       onClick={e => {
                         fillExampleData(e);
                       }}
                     >
                       See an example dataset
-                    </a>
+                    </span>
                     .
                   </small>
                 </label>
@@ -57,7 +60,15 @@ function InputArea() {
                 />
                 {state.data.length > 0 ? (
                   <p className="small font-italic mt-2">
-                    {state.data.length} observations
+                    {state.data.length} observations.{" "}
+                    <span
+                      className="text-link"
+                      onClick={() => {
+                        clearData();
+                      }}
+                    >
+                      Clear
+                    </span>
                   </p>
                 ) : null}
               </div>
