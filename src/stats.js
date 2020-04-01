@@ -1,29 +1,55 @@
-import { normal, stdev, seq } from "jstat";
+import { normal, seq } from "jstat";
 import { ShapiroWilkW } from "./shapiro";
 
-export const mean = a => a.reduce((p, c) => p + c, 0) / a.length;
+/** Rounds a float to a specified number of digits */
+export const roundDigits = (f, n) =>
+  parseFloat(Math.round(f + "e+" + n) + "e-" + n).toFixed(n);
 
-export const sd = a => {
-  // Sample standard deviation
-  return stdev(a, true);
+/** Rounds a float to a specified number of significant figures */
+export const roundSigFigs = (f, n) => parseFloat(f).toPrecision(n);
+
+/** Returns the number of decimal places represented in the number */
+export const countDigits = s => {
+  const value = parseFloat(s);
+  return Math.floor(value) === value
+    ? 0
+    : value.toString().split(".")[1].length || 0;
 };
 
+/** Calculates the arithmetic mean of an array */
+export const mean = a => a.reduce((p, c) => p + c, 0) / a.length;
+
+/**
+ * Calculates the sample standard deviation
+ *
+ * Uses the n-1 sample standard deviation method
+ * Method based on jStat
+ */
+export const sd = a => {
+  const m = mean(a);
+  // Calculate sum of squared errors
+  const sse = a.reduce((p, c) => p + (c - m) ** 2, 0);
+  const variance = sse / (a.length - 1); // n-1 (sample std. dev.)
+  return Math.sqrt(variance);
+};
+
+/** Calculates the process capability index Cpk */
 export const cpk = (m, sd, lsl, usl) => {
   const lower = lsl ? (m - lsl) / (3 * sd) : null;
   const upper = usl ? (usl - m) / (3 * sd) : null;
   return lower ? (upper ? Math.min(lower, upper) : lower) : null;
 };
 
+/** Calculates the uniform order statistic medians */
 export const uniform_order_statistic_medians = n => {
-  // Calculate the uniform order statistic medians
   const osmax = 0.5 ** (1 / n);
   const osmin = 1 - osmax;
   const os = seq(osmin, osmax, n);
   return os;
 };
 
+/** Calculates the theoretical quantiles of the normal distribution */
 export const quantiles = a => {
-  // Calculate the theoretical quantiles of the normal distribution
   a.sort((a, b) => a - b);
   const os = uniform_order_statistic_medians(a.length);
   const q = os.map(v => {
@@ -33,13 +59,12 @@ export const quantiles = a => {
   return [a, q];
 };
 
+/**
+ * Performs a Shapiro-Wilk normality test
+ *
+ * Returns the normal probability (p), in the range (0,1)
+ */
 export const shapiroWilk = x => {
-  /* 
-  Perform a Shapiro-Wilk normality test and return the normal probability p, in the 
-  range (0,1). In most cases a threshold of 0.05 will be used
-  
-  */
-
   const n = x.length;
   const w = ShapiroWilkW(x);
 

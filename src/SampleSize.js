@@ -132,10 +132,10 @@ const SampleSize = () => {
               The tolerance interval shall fall completely within the
               specification limits, i.e. the following two conditions hold:
             </p>
-            <p class="text-center mb-0">
+            <p className="text-center mb-0">
               <code>m + k*s &lt; USL</code>
             </p>
-            <p class="text-center">
+            <p className="text-center">
               <code>LSL &lt; m - k*s</code>
             </p>
           </div>

@@ -22,8 +22,8 @@ function NavBar() {
             Sample Size Determination
           </NavLink>
         </li>
-        <li className="nav-item" activeClassName="active">
-          <NavLink className="nav-link" to="/about">
+        <li className="nav-item">
+          <NavLink className="nav-link" to="/about" activeClassName="active">
             About
           </NavLink>
         </li>

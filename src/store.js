@@ -1,4 +1,5 @@
 import React from "react";
+import { countDigits } from "./stats";
 
 export const Reducer = (state, action) => {
   switch (action.type) {
@@ -8,10 +9,12 @@ export const Reducer = (state, action) => {
         .split(/[\n\t, ]/)
         .map(v => parseFloat(v))
         .filter(v => !isNaN(v));
+      let decimalPlaces = Math.max(...data.map(f => countDigits(f)));
       return {
         ...state,
         rawData: rawData,
         data: data,
+        decimalPlaces: decimalPlaces,
         datarevision: state.datarevision + 1
       };
     case "UPDATE_LSL":
@@ -34,6 +37,7 @@ export const Reducer = (state, action) => {
 const initialState = {
   rawData: "",
   data: [],
+  decimalPlaces: 2,
   lsl: null,
   usl: null,
   datarevision: 0

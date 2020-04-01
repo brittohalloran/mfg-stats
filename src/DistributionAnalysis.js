@@ -1,8 +1,15 @@
 import React from "react";
 import { Context } from "./store";
-import { mean, std, format } from "mathjs";
 import Plot from "react-plotly.js";
-import { cpk, quantiles, shapiroWilk } from "./stats";
+import {
+  mean,
+  sd,
+  cpk,
+  quantiles,
+  shapiroWilk,
+  roundDigits,
+  roundSigFigs
+} from "./stats";
 
 function DistributionAnalysis() {
   const ctx = React.useContext(Context);
@@ -83,7 +90,7 @@ function DistributionAnalysis() {
                   <td>
                     {shapiroWilkP ? (
                       <span>
-                        p = {shapiroWilkP.toFixed(3)} (
+                        p = {roundSigFigs(shapiroWilkP, 2)} (
                         {shapiroWilkP < 0.05 ? "not " : null}normal)
                       </span>
                     ) : null}
@@ -149,10 +156,10 @@ function DistributionAnalysis() {
                   <td style={{ width: "40%" }}>Mean</td>
                   <td>
                     {state.data.length > 0
-                      ? format(mean(state.data) || 0, {
-                          notation: "fixed",
-                          precision: 2
-                        })
+                      ? roundDigits(
+                          mean(state.data) || 0,
+                          state.decimalPlaces + 1
+                        )
                       : null}
                   </td>
                 </tr>
@@ -160,10 +167,7 @@ function DistributionAnalysis() {
                   <td>Standard deviation</td>
                   <td>
                     {state.data.length > 0
-                      ? format(std(state.data) || 0, {
-                          notation: "fixed",
-                          precision: 2
-                        })
+                      ? roundSigFigs(sd(state.data) || 0, 2)
                       : null}
                   </td>
                 </tr>
@@ -171,17 +175,14 @@ function DistributionAnalysis() {
                   <td>Cpk</td>
                   <td>
                     {state.data.length > 0
-                      ? format(
+                      ? roundDigits(
                           cpk(
                             mean(state.data),
-                            std(state.data),
+                            sd(state.data),
                             state.lsl,
                             state.usl
                           ) || 0,
-                          {
-                            notation: "fixed",
-                            precision: 3
-                          }
+                          2
                         )
                       : null}
                   </td>
@@ -190,7 +191,10 @@ function DistributionAnalysis() {
                   <td>Ordered data</td>
                   <td>
                     {state.data
-                      ? state.data.sort((a, b) => a - b).join(", ")
+                      ? state.data
+                          .sort((a, b) => a - b)
+                          .map(v => roundDigits(v, state.decimalPlaces))
+                          .join(", ")
                       : null}
                   </td>
                 </tr>
