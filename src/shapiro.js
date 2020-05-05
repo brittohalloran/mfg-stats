@@ -179,7 +179,7 @@ export const ShapiroWilkW = x => {
     }
     return ret_val;
   }
-  x = x.sort(function(a, b) {
+  x = x.sort(function (a, b) {
     return a - b;
   });
   var n = x.length;
@@ -212,7 +212,7 @@ export const ShapiroWilkW = x => {
   var pw = 1;
   an = n;
 
-  if (n == 3) a[1] = 0.70710678;
+  if (n === 3) a[1] = 0.70710678;
   /* = sqrt(1/2) */ else {
     an25 = an + 0.25;
     summ2 = 0.0;
@@ -232,7 +232,7 @@ export const ShapiroWilkW = x => {
       a2 = -a[2] / ssumm2 + poly(c2, 6, rsn);
       fac = Math.sqrt(
         (summ2 - 2 * (a[1] * a[1]) - 2 * (a[2] * a[2])) /
-          (1 - 2 * (a1 * a1) - 2 * (a2 * a2))
+        (1 - 2 * (a1 * a1) - 2 * (a2 * a2))
       );
       a[2] = a2;
     } else {
@@ -264,7 +264,7 @@ export const ShapiroWilkW = x => {
     }
     sx += xi;
     i++;
-    if (i != j) sa += sign(i - j) * a[Math.min(i, j)];
+    if (i !== j) sa += sign(i - j) * a[Math.min(i, j)];
     xx = xi;
   }
   if (n > 5000) {
@@ -279,7 +279,7 @@ export const ShapiroWilkW = x => {
   sx /= n;
   ssa = ssx = sax = 0;
   for (i = 0, j = n - 1; i < n; i++, j--) {
-    if (i != j) asa = sign(i - j) * a[1 + Math.min(i, j)] - sa;
+    if (i !== j) asa = sign(i - j) * a[1 + Math.min(i, j)] - sa;
     else asa = -sa;
     xsx = x[i] / range - sx;
     ssa += asa * asa;
@@ -296,7 +296,7 @@ export const ShapiroWilkW = x => {
 
   /*	Calculate significance level for W */
 
-  if (n == 3) {
+  if (n === 3) {
     /* exact P value : */
     var pi6 = 1.90985931710274; /* = 6/pi */
     var stqr = 1.0471975511966; /* = asin(sqrt(3/4)) */
