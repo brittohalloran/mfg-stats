@@ -22,3 +22,7 @@ In order to run it locally, you'll need yarn.
 - [React](https://reactjs.org/)
 - [Plotly.js](https://plotly.com/javascript/)
 - [jStat](https://github.com/jstat/jstat)
+
+## Deploy pipeline
+
+Netlify watches and automatically pulls and attempts to deploy the master branch of this repository
