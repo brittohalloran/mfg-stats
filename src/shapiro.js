@@ -295,11 +295,11 @@ export const ShapiroWilkW = x => {
   var w = 1 - w1;
 
   /*	Calculate significance level for W */
-
-  if (n === 3) {
-    /* exact P value : */
-    var pi6 = 1.90985931710274; /* = 6/pi */
-    var stqr = 1.0471975511966; /* = asin(sqrt(3/4)) */
+  
+  /* if (n === 3) {
+    /* exact P value : */ /*
+    var pi6 = 1.90985931710274; /* = 6/pi */ /*
+    var stqr = 1.0471975511966; /* = asin(sqrt(3/4)) */ /*
     pw = pi6 * (Math.asin(Math.sqrt(w)) - stqr);
     if (pw < 0) pw = 0;
     return w;
@@ -309,17 +309,19 @@ export const ShapiroWilkW = x => {
   if (n <= 11) {
     gamma = poly(g, 2, an);
     if (y >= gamma) {
-      pw = 1e-99; /* an "obvious" value, was 'small' which was 1e-19f */
+      pw = 1e-99; /* an "obvious" value, was 'small' which was 1e-19f */ /*
       return w;
     }
     y = -Math.log(gamma - y);
     m = poly(c3, 4, an);
     s = Math.exp(poly(c4, 4, an));
   } else {
-    /* n >= 12 */
+    /* n >= 12 */ /*
     m = poly(c5, 4, xx);
     s = Math.exp(poly(c6, 3, xx));
   }
+  
+  */
 
   // Oops, we don't have pnorm
   // pw = pnorm(y, m, s, 0/* upper tail */, 0);
