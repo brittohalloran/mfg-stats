@@ -24,6 +24,8 @@
  *  http://www.r-project.org/Licenses/
  */
 
+/* eslint-disable */
+
 // The inverse of cdf.
 function normalQuantile(p, mu, sigma) {
   var q, r, val;
