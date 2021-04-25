@@ -20,7 +20,7 @@ function DistributionAnalysis() {
     parseFloat(state.conf_level),
     parseFloat(state.p),
     state.data.length,
-    !(state.lsl && state.usl)
+    (state.lsl || state.usl) && !(state.lsl && state.usl)
   );
 
   let limitLines = [];
@@ -52,6 +52,64 @@ function DistributionAnalysis() {
       ]);
     }
   });
+
+  // Create tolerance interval lines
+  if (k) {
+    const ltl = mean(state.data) - k * sd(state.data);
+    const utl = mean(state.data) + k * sd(state.data);
+    limitLines = limitLines.concat([
+      {
+        type: "line",
+        x0: ltl,
+        x1: utl,
+        y0: 0.5,
+        y1: 0.5,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#777777" },
+      },
+      {
+        type: "line",
+        x0: ltl,
+        x1: ltl,
+        y0: 0.48,
+        y1: 0.52,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#777777" },
+      },
+      {
+        type: "line",
+        x0: utl,
+        x1: utl,
+        y0: 0.48,
+        y1: 0.52,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#777777" },
+      },
+    ]);
+    annotations = annotations.concat([
+      {
+        x: ltl,
+        y: 0.55,
+        xref: "x",
+        yref: "paper",
+        text: roundDigits(ltl, state.decimalPlaces + 1),
+        showarrow: false,
+        font: { color: "#333333" },
+      },
+      {
+        x: utl,
+        y: 0.55,
+        xref: "x",
+        yref: "paper",
+        text: roundDigits(utl, state.decimalPlaces + 1),
+        showarrow: false,
+        font: { color: "#333333" },
+      },
+    ]);
+  }
 
   let [x, q] = quantiles(state.data);
   const shapiroWilkP = state.data.length > 3 ? shapiroWilk(state.data) : null;
