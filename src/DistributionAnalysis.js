@@ -8,16 +8,24 @@ import {
   quantiles,
   shapiroWilk,
   roundDigits,
-  roundSigFigs
+  roundSigFigs,
+  tolerance_interval_factor,
 } from "./stats";
 
 function DistributionAnalysis() {
   const ctx = React.useContext(Context);
   const state = ctx[0];
 
+  const k = tolerance_interval_factor(
+    parseFloat(state.conf_level),
+    parseFloat(state.p),
+    state.data.length,
+    !(state.lsl && state.usl)
+  );
+
   let limitLines = [];
   let annotations = [];
-  [state.lsl, state.usl].forEach(v => {
+  [state.lsl, state.usl].forEach((v) => {
     if (v) {
       limitLines = limitLines.concat([
         {
@@ -28,8 +36,8 @@ function DistributionAnalysis() {
           y1: 0.9,
           xref: "x",
           yref: "paper",
-          line: { color: "#cc4125" }
-        }
+          line: { color: "#cc4125" },
+        },
       ]);
       annotations = annotations.concat([
         {
@@ -39,8 +47,8 @@ function DistributionAnalysis() {
           yref: "paper",
           text: v,
           showarrow: false,
-          font: { color: "#cc4125" }
-        }
+          font: { color: "#cc4125" },
+        },
       ]);
     }
   });
@@ -62,8 +70,8 @@ function DistributionAnalysis() {
                   mode: "markers",
                   x: q,
                   y: x,
-                  marker: { color: "#afd3e7" }
-                }
+                  marker: { color: "#afd3e7" },
+                },
               ]}
               layout={{
                 autosize: false,
@@ -73,7 +81,7 @@ function DistributionAnalysis() {
 
                 margin: { l: 40, r: 20, b: 40, t: 20 },
                 xaxis: { zeroline: false, title: "Theoretical Quantiles" },
-                yaxis: { zeroline: false }
+                yaxis: { zeroline: false },
               }}
               config={{ displaylogo: false }}
             />
@@ -123,8 +131,8 @@ function DistributionAnalysis() {
                 {
                   type: "histogram",
                   x: state.data,
-                  marker: { color: "#afd3e7" }
-                }
+                  marker: { color: "#afd3e7" },
+                },
               ]}
               layout={{
                 autosize: false,
@@ -136,7 +144,7 @@ function DistributionAnalysis() {
                 annotations: annotations,
                 xaxis: { rangemode: "nonnegative" },
                 yaxis: { rangemode: "nonnegative" },
-                datarevision: state.datarevision
+                datarevision: state.datarevision,
               }}
               config={{ displaylogo: false }}
             />
@@ -187,13 +195,35 @@ function DistributionAnalysis() {
                       : null}
                   </td>
                 </tr>
+                {k ? (
+                  <tr>
+                    <td>k-factor</td>
+                    <td>{roundDigits(k, 3)}</td>
+                  </tr>
+                ) : null}
+                {k ? (
+                  <tr>
+                    <td>Tolerance interval</td>
+                    <td>
+                      {roundDigits(
+                        mean(state.data) - k * sd(state.data),
+                        state.decimalPlaces + 1
+                      )}{" "}
+                      -{" "}
+                      {roundDigits(
+                        mean(state.data) + k * sd(state.data),
+                        state.decimalPlaces + 1
+                      )}
+                    </td>
+                  </tr>
+                ) : null}
                 <tr>
                   <td>Ordered data</td>
                   <td>
                     {state.data
                       ? state.data
                           .sort((a, b) => a - b)
-                          .map(v => roundDigits(v, state.decimalPlaces))
+                          .map((v) => roundDigits(v, state.decimalPlaces))
                           .join(", ")
                       : null}
                   </td>

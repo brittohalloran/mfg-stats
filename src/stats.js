@@ -1,4 +1,4 @@
-import { normal, seq } from "jstat";
+import { normal, chisquare, /* noncentralt,*/ seq } from "jstat";
 import { ShapiroWilkW } from "./shapiro";
 
 /** Rounds a float to a specified number of digits */
@@ -9,7 +9,7 @@ export const roundDigits = (f, n) =>
 export const roundSigFigs = (f, n) => parseFloat(f).toPrecision(n);
 
 /** Returns the number of decimal places represented in the number */
-export const countDigits = s => {
+export const countDigits = (s) => {
   const value = parseFloat(s);
   return Math.floor(value) === value
     ? 0
@@ -17,15 +17,14 @@ export const countDigits = s => {
 };
 
 /** Calculates the arithmetic mean of an array */
-export const mean = a => a.reduce((p, c) => p + c, 0) / a.length;
+export const mean = (a) => a.reduce((p, c) => p + c, 0) / a.length;
 
-/**
- * Calculates the sample standard deviation
+/** Calculates the sample standard deviation
  *
- * Uses the n-1 sample standard deviation method
- * Method based on jStat
+ *  Uses the n-1 sample standard deviation method
+ *  Method based on jStat
  */
-export const sd = a => {
+export const sd = (a) => {
   const m = mean(a);
   // Calculate sum of squared errors
   const sse = a.reduce((p, c) => p + (c - m) ** 2, 0);
@@ -41,18 +40,70 @@ export const cpk = (m, sd, lsl, usl) => {
 };
 
 /** Calculates the uniform order statistic medians */
-export const uniform_order_statistic_medians = n => {
+export const uniform_order_statistic_medians = (n) => {
   const osmax = 0.5 ** (1 / n);
   const osmin = 1 - osmax;
   const os = seq(osmin, osmax, n);
   return os;
 };
 
+/** Calculate the one or two sided tolerance interval k-factor
+ *
+ *  The k-factor is the number of standard deviations from the mean that the
+ *  tolerance interval limit lies.
+ *
+ *  Tolerance interval = (m - k*sd, m + k*sd)
+ *
+ *  The k-factor is calculated per NIST guidance:
+ *  https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm
+ *
+ *  If one-sided, the non-central t-distribution method is used.
+ *  If two-sided, the chi-squared method is used.
+ *
+ */
+export const tolerance_interval_factor = (c, p, n, one_sided = false) => {
+  console.log("c", c, "p", p, "n", n, "one-sided", one_sided);
+  if (c && p && n) {
+  } else {
+    console.log("Returning NaN");
+    return NaN;
+  }
+  const dof = n - 1;
+  if (one_sided) {
+    // jStat noncentralt.inv does not exist yet, need to calculate inverse CDF some other way
+    return NaN;
+
+    /* console.log("Calculating one-sided k");
+    // Calculate normal z-score for the given p-vaue
+    const z_p = normal.inv(p);
+    console.log("z_p", z_p);
+
+    // Calculate k-value using non-central t distribution
+    const k = noncentralt.inv(1 - c, dof, z_p * Math.sqrt(n)) / Math.sqrt(n);
+    console.log("k", k);
+    return k; */
+  } else {
+    console.log("Calculating two-sided k");
+    // Calculate normal z-score for the given p-vaue
+    const z_p = -normal.inv((1 - p) / 2, 0, 1);
+    console.log("z_p", z_p);
+
+    // Calculate chi-squared ISF for the given confidence level c
+    const x_p = chisquare.inv(1 - c, dof);
+    console.log("x_p", x_p);
+
+    // Calculate the k-factor
+    const k = Math.sqrt((dof * (1 + 1 / n) * z_p ** 2) / x_p);
+    console.log("k", k);
+    return k;
+  }
+};
+
 /** Calculates the theoretical quantiles of the normal distribution */
-export const quantiles = a => {
+export const quantiles = (a) => {
   a.sort((a, b) => a - b);
   const os = uniform_order_statistic_medians(a.length);
-  const q = os.map(v => {
+  const q = os.map((v) => {
     let n = normal.inv(v, 0, 1);
     return n;
   });
@@ -64,7 +115,7 @@ export const quantiles = a => {
  *
  * Returns the normal probability (p), in the range (0,1)
  */
-export const shapiroWilk = x => {
+export const shapiroWilk = (x) => {
   const n = x.length;
   const w = ShapiroWilkW(x);
 
