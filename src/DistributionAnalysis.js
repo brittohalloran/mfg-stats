@@ -10,11 +10,16 @@ import {
   roundDigits,
   roundSigFigs,
   tolerance_interval_factor,
+  cpkl,
+  cpku,
 } from "./stats";
 
 function DistributionAnalysis() {
   const ctx = React.useContext(Context);
   const state = ctx[0];
+
+  const m = mean(state.data);
+  const s = sd(state.data);
 
   const k = tolerance_interval_factor(
     parseFloat(state.conf_level),
@@ -55,8 +60,8 @@ function DistributionAnalysis() {
 
   // Create tolerance interval lines
   if (k) {
-    const ltl = mean(state.data) - k * sd(state.data);
-    const utl = mean(state.data) + k * sd(state.data);
+    const ltl = m - k * s;
+    const utl = m + k * s;
     limitLines = limitLines.concat([
       {
         type: "line",
@@ -222,10 +227,7 @@ function DistributionAnalysis() {
                   <td style={{ width: "40%" }}>Mean</td>
                   <td>
                     {state.data.length > 0
-                      ? roundDigits(
-                          mean(state.data) || 0,
-                          state.decimalPlaces + 1
-                        )
+                      ? roundDigits(m || 0, state.decimalPlaces + 1)
                       : null}
                   </td>
                 </tr>
@@ -233,45 +235,43 @@ function DistributionAnalysis() {
                   <td>Standard deviation</td>
                   <td>
                     {state.data.length > 0
-                      ? roundSigFigs(sd(state.data) || 0, 2)
+                      ? roundDigits(s || 0, state.decimalPlaces + 1)
                       : null}
                   </td>
                 </tr>
                 <tr>
                   <td>Cpk</td>
                   <td>
-                    {state.data.length > 0
-                      ? roundDigits(
-                          cpk(
-                            mean(state.data),
-                            sd(state.data),
-                            state.lsl,
-                            state.usl
-                          ) || 0,
-                          2
-                        )
+                    {state.data.length > 0 && (state.lsl || state.usl) ? (
+                      roundDigits(cpk(m, s, state.lsl, state.usl) || 0, 2)
+                    ) : (
+                      <i>n/a</i>
+                    )}
+                    {state.data.length > 0 && state.lsl && state.usl
+                      ? " (" +
+                        roundDigits(cpkl(m, s, state.lsl), 2) +
+                        " lower, " +
+                        roundDigits(cpku(m, s, state.usl), 2) +
+                        " upper)"
                       : null}
                   </td>
                 </tr>
                 {k ? (
                   <tr>
-                    <td>k-factor</td>
-                    <td>{roundDigits(k, 3)}</td>
-                  </tr>
-                ) : null}
-                {k ? (
-                  <tr>
                     <td>Tolerance interval</td>
                     <td>
-                      {roundDigits(
-                        mean(state.data) - k * sd(state.data),
-                        state.decimalPlaces + 1
-                      )}{" "}
-                      -{" "}
-                      {roundDigits(
-                        mean(state.data) + k * sd(state.data),
-                        state.decimalPlaces + 1
-                      )}
+                      {roundDigits(m - k * s, state.decimalPlaces + 1)} -{" "}
+                      {roundDigits(m + k * s, state.decimalPlaces + 1)}
+                      <br />
+                      {"k = " + roundDigits(k, 3)}
+                      <br />
+                      <i>
+                        {100 * state.conf_level +
+                          "% C, " +
+                          100 * state.p +
+                          "% P, n = " +
+                          state.data.length}
+                      </i>
                     </td>
                   </tr>
                 ) : null}
@@ -291,15 +291,22 @@ function DistributionAnalysis() {
             <h6 className="mt-5 text-uppercase font-weight-bold">Learn</h6>
             <p>
               On this panel we look at a histogram of the data and overlay any
-              specification limits. The graphical output gives a quick visual
-              indication of where the data lies relative to the specification
-              limits.
+              specification limits and tolerance interval. The graphical output
+              gives a quick visual indication of where the data lies relative to
+              the specification limits.
             </p>
             <p>
               The process capability index, <i>Cpk</i>, is a measure of how
               closely the data lies to its specified limits. A Cpk of 1 means
               that the mean of the data is 3 standard deviations away from its
               closest limit.
+            </p>
+            <p>
+              The tolerance interval is a range within which a stated proportion{" "}
+              <code>P</code> of the population lies, with a given confidence
+              level <code>C</code>. This tolerance interval is unrelated to the
+              engineering tolerances, which we call specification limits here to
+              avoid confusion.
             </p>
           </div>
         </div>

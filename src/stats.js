@@ -32,6 +32,16 @@ export const sd = (a) => {
   return Math.sqrt(variance);
 };
 
+/** Calculates the process capability index Cpk for the lower spec */
+export const cpkl = (m, sd, lsl) => {
+  return lsl ? (m - lsl) / (3 * sd) : null;
+};
+
+/** Calculates the process capability index Cpk for the upper spec */
+export const cpku = (m, sd, usl) => {
+  return usl ? (usl - m) / (3 * sd) : null;
+};
+
 /** Calculates the process capability index Cpk */
 export const cpk = (m, sd, lsl, usl) => {
   const lower = lsl ? (m - lsl) / (3 * sd) : null;
@@ -62,10 +72,8 @@ export const uniform_order_statistic_medians = (n) => {
  *
  */
 export const tolerance_interval_factor = (c, p, n, one_sided = false) => {
-  console.log("c", c, "p", p, "n", n, "one-sided", one_sided);
   if (c && p && n) {
   } else {
-    console.log("Returning NaN");
     return NaN;
   }
   const dof = n - 1;
@@ -83,18 +91,15 @@ export const tolerance_interval_factor = (c, p, n, one_sided = false) => {
     console.log("k", k);
     return k; */
   } else {
-    console.log("Calculating two-sided k");
     // Calculate normal z-score for the given p-vaue
     const z_p = -normal.inv((1 - p) / 2, 0, 1);
-    console.log("z_p", z_p);
 
     // Calculate chi-squared ISF for the given confidence level c
     const x_p = chisquare.inv(1 - c, dof);
-    console.log("x_p", x_p);
 
     // Calculate the k-factor
     const k = Math.sqrt((dof * (1 + 1 / n) * z_p ** 2) / x_p);
-    console.log("k", k);
+
     return k;
   }
 };

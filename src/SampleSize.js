@@ -73,7 +73,7 @@ const SampleSize = () => {
             <h6 className="text-uppercase font-weight-bold">Interpretation</h6>
             <p>
               If all <code>n</code> samples pass, we are <code>C%</code>{" "}
-              confidence that at least <code>R%</code> of the population will
+              confident that at least <code>R%</code> of the population will
               pass.
             </p>
             <h6 className="text-uppercase font-weight-bold">

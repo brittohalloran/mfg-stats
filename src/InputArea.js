@@ -69,8 +69,9 @@ function InputArea() {
                         clearData();
                       }}
                     >
-                      Clear
+                      Clear data
                     </span>
+                    .
                   </p>
                 ) : null}
               </div>
@@ -99,7 +100,7 @@ function InputArea() {
             </div>
             <div className="col-md-3">
               <div className="form-group">
-                <label>Confidence Level</label>
+                <label>Confidence Level (C)</label>
                 <input
                   className="form-control"
                   onChange={(e) => {
@@ -109,7 +110,7 @@ function InputArea() {
                 />
               </div>
               <div className="form-group">
-                <label>Proportion Conforming</label>
+                <label>Proportion Conforming (P)</label>
                 <input
                   className="form-control"
                   onChange={(e) => {
