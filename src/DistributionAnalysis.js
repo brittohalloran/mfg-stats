@@ -302,11 +302,17 @@ function DistributionAnalysis() {
               closest limit.
             </p>
             <p>
-              The tolerance interval is a range within which a stated proportion{" "}
-              <code>P</code> of the population lies, with a given confidence
-              level <code>C</code>. This tolerance interval is unrelated to the
-              engineering tolerances, which we call specification limits here to
-              avoid confusion.
+              The{" "}
+              <a href="https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm">
+                tolerance interval
+              </a>{" "}
+              is a range within which a stated proportion <code>P</code> of the
+              population lies, with a given confidence level <code>C</code>.
+              This tolerance interval is unrelated to the engineering
+              tolerances, which we call specification limits here to avoid
+              confusion. The accuracy of the tolerance interval is based on an
+              underlying assumption that the population is normally distributed,
+              so the normality check on this page is a critical starting point.
             </p>
           </div>
         </div>

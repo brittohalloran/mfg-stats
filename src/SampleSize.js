@@ -98,6 +98,11 @@ const SampleSize = () => {
               need to incorporate that sampling error uncertainty, which will{" "}
               <i>widen</i> our tolerance interval.
             </p>
+            <p>
+              The accuracy of the tolerance interval is based on an underlying
+              assumption that the population is normally distributed, so a
+              normality check is a critical starting point.
+            </p>
             <h6 className="text-uppercase font-weight-bold">Calculation</h6>
             <p>
               The upper and lower ends of a tolerance interval have the form:

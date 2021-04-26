@@ -67,8 +67,6 @@ export const uniform_order_statistic_medians = (n) => {
  *  The k-factor is calculated per NIST guidance:
  *  https://www.itl.nist.gov/div898/handbook/prc/section2/prc263.htm
  *
- *  If one-sided, the non-central t-distribution method is used.
- *  If two-sided, the chi-squared method is used.
  *
  */
 export const tolerance_interval_factor = (c, p, n, one_sided = false) => {
@@ -78,18 +76,22 @@ export const tolerance_interval_factor = (c, p, n, one_sided = false) => {
   }
   const dof = n - 1;
   if (one_sided) {
-    // jStat noncentralt.inv does not exist yet, need to calculate inverse CDF some other way
-    return NaN;
+    // This one-sided method uses the Natrella 1963 method. The non-central
+    // T distribution method may be more accurate (particularly for small
+    // values of n) but jStat doesn't have the inverse CDF function for the
+    // non-central T distribution. For n > 10 this method is acceptable.
 
-    /* console.log("Calculating one-sided k");
-    // Calculate normal z-score for the given p-vaue
-    const z_p = normal.inv(p);
-    console.log("z_p", z_p);
+    // // Calculate the normal z-score for the given p and c values
+    // const z_p = normal.inv(p, 0, 1);
+    // const z_c = normal.inv(c, 0, 1);
 
-    // Calculate k-value using non-central t distribution
-    const k = noncentralt.inv(1 - c, dof, z_p * Math.sqrt(n)) / Math.sqrt(n);
-    console.log("k", k);
-    return k; */
+    // // Calculate a, b, and the k-factor
+    // const a = 1 - z_c ** 2 / (2 * (n - 1));
+    // const b = z_p ** 2 - z_c ** 2 / n;
+    // const k = (z_p + Math.sqrt(z_p ** 2 - a * b)) / a;
+
+    // return k;
+    return null;
   } else {
     // Calculate normal z-score for the given p-vaue
     const z_p = -normal.inv((1 - p) / 2, 0, 1);
