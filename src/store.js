@@ -21,12 +21,26 @@ export const Reducer = (state, action) => {
       return {
         ...state,
         lsl: action.payload === "" ? null : action.payload,
+        tol_int_type: !(action.payload === "")
+          ? state.usl
+            ? "both"
+            : "upper"
+          : state.usl
+          ? "lower"
+          : "both",
         datarevision: state.datarevision + 1,
       };
     case "UPDATE_USL":
       return {
         ...state,
         usl: action.payload === "" ? null : action.payload,
+        tol_int_type: !(action.payload === "")
+          ? state.lsl
+            ? "both"
+            : "lower"
+          : state.lsl
+          ? "upper"
+          : "both",
         datarevision: state.datarevision + 1,
       };
     case "UPDATE_C":
@@ -41,6 +55,15 @@ export const Reducer = (state, action) => {
         p: action.payload === "" ? null : action.payload,
         datarevision: state.datarevision + 1,
       };
+    case "UPDATE_TOL_INT_TYPE":
+      return {
+        ...state,
+        tol_int_type: ["both", "upper", "lower"].includes(action.payload)
+          ? action.payload
+          : state.tol_int_type,
+        datarevision: state.datarevision + 1,
+      };
+
     default:
       return state;
   }
@@ -54,6 +77,7 @@ const initialState = {
   usl: null,
   conf_level: null,
   p: null,
+  tol_int_type: "both",
   datarevision: 0,
 };
 

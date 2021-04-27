@@ -46,7 +46,19 @@ export const cpku = (m, sd, usl) => {
 export const cpk = (m, sd, lsl, usl) => {
   const lower = lsl ? (m - lsl) / (3 * sd) : null;
   const upper = usl ? (usl - m) / (3 * sd) : null;
-  return lower ? (upper ? Math.min(lower, upper) : lower) : null;
+  if (lower) {
+    if (upper) {
+      return Math.min(lower, upper);
+    } else {
+      return lower;
+    }
+  } else {
+    if (upper) {
+      return upper;
+    } else {
+      return null;
+    }
+  }
 };
 
 /** Calculates the uniform order statistic medians */
@@ -81,17 +93,16 @@ export const tolerance_interval_factor = (c, p, n, one_sided = false) => {
     // values of n) but jStat doesn't have the inverse CDF function for the
     // non-central T distribution. For n > 10 this method is acceptable.
 
-    // // Calculate the normal z-score for the given p and c values
-    // const z_p = normal.inv(p, 0, 1);
-    // const z_c = normal.inv(c, 0, 1);
+    // Calculate the normal z-score for the given p and c values
+    const z_p = normal.inv(p, 0, 1);
+    const z_c = normal.inv(c, 0, 1);
 
-    // // Calculate a, b, and the k-factor
-    // const a = 1 - z_c ** 2 / (2 * (n - 1));
-    // const b = z_p ** 2 - z_c ** 2 / n;
-    // const k = (z_p + Math.sqrt(z_p ** 2 - a * b)) / a;
+    // Calculate a, b, and the k-factor
+    const a = 1 - z_c ** 2 / (2 * (n - 1));
+    const b = z_p ** 2 - z_c ** 2 / n;
+    const k = (z_p + Math.sqrt(z_p ** 2 - a * b)) / a;
 
-    // return k;
-    return null;
+    return k;
   } else {
     // Calculate normal z-score for the given p-vaue
     const z_p = -normal.inv((1 - p) / 2, 0, 1);

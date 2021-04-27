@@ -16,7 +16,7 @@ function InputArea() {
       payload:
         "4.3, 4.4, 4.4, 4.4, 4.5, 4.6, 4.6, 4.6, 4.6, 4.7, 4.7, 4.8, 4.8, 4.8, 4.8, 4.8, 4.9, 4.9, 4.9, 4.9, 4.9, 4.9, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5.1, 5.1, 5.1, 5.1, 5.1, 5.1, 5.1, 5.1, 5.1, 5.2, 5.2, 5.2, 5.2, 5.3, 5.4, 5.4, 5.4, 5.4, 5.4, 5.4, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.6, 5.6, 5.6, 5.6, 5.6, 5.6, 5.7, 5.7, 5.7, 5.7, 5.7, 5.7, 5.7, 5.7, 5.8, 5.8, 5.8, 5.8, 5.8, 5.8, 5.8, 5.9, 5.9, 5.9, 6, 6, 6, 6, 6, 6, 6.1, 6.1, 6.1, 6.1, 6.1, 6.1, 6.2, 6.2, 6.2, 6.2, 6.3, 6.3, 6.3, 6.3, 6.3, 6.3, 6.3, 6.3, 6.3, 6.4, 6.4, 6.4, 6.4, 6.4, 6.4, 6.4, 6.5, 6.5, 6.5, 6.5, 6.5, 6.6, 6.6, 6.7, 6.7, 6.7, 6.7, 6.7, 6.7, 6.7, 6.7, 6.8, 6.8, 6.8, 6.9, 6.9, 6.9, 6.9, 7, 7.1, 7.2, 7.2, 7.2, 7.3, 7.4, 7.6, 7.7, 7.7, 7.7, 7.7, 7.9",
     });
-    dispatch({ type: "UPDATE_LSL", payload: 4 });
+    dispatch({ type: "UPDATE_LSL", payload: 3 });
     dispatch({ type: "UPDATE_USL", payload: 9 });
     dispatch({ type: "UPDATE_C", payload: 0.9 });
     dispatch({ type: "UPDATE_P", payload: 0.95 });
@@ -100,6 +100,20 @@ function InputArea() {
             </div>
             <div className="col-md-3">
               <div className="form-group">
+                <label>Tolerance Interval Type</label>
+                <select
+                  className="form-control"
+                  onChange={(e) => {
+                    handleFormChange("UPDATE_TOL_INT_TYPE", e.target.value);
+                  }}
+                  value={state.tol_int_type}
+                >
+                  <option value="both">Two-sided</option>
+                  <option value="upper">One-sided (upper)</option>
+                  <option value="lower">One-sided (lower)</option>
+                </select>
+              </div>
+              <div className="form-group">
                 <label>Confidence Level (C)</label>
                 <input
                   className="form-control"
@@ -109,6 +123,7 @@ function InputArea() {
                   value={state.conf_level || ""}
                 />
               </div>
+
               <div className="form-group">
                 <label>Proportion Conforming (P)</label>
                 <input

@@ -25,7 +25,7 @@ function DistributionAnalysis() {
     parseFloat(state.conf_level),
     parseFloat(state.p),
     state.data.length,
-    (state.lsl || state.usl) && !(state.lsl && state.usl)
+    ["upper", "lower"].includes(state.tol_int_type)
   );
 
   let limitLines = [];
@@ -73,47 +73,59 @@ function DistributionAnalysis() {
         yref: "paper",
         line: { color: "#777777" },
       },
-      {
-        type: "line",
-        x0: ltl,
-        x1: ltl,
-        y0: 0.48,
-        y1: 0.52,
-        xref: "x",
-        yref: "paper",
-        line: { color: "#777777" },
-      },
-      {
-        type: "line",
-        x0: utl,
-        x1: utl,
-        y0: 0.48,
-        y1: 0.52,
-        xref: "x",
-        yref: "paper",
-        line: { color: "#777777" },
-      },
     ]);
-    annotations = annotations.concat([
-      {
-        x: ltl,
-        y: 0.55,
-        xref: "x",
-        yref: "paper",
-        text: roundDigits(ltl, state.decimalPlaces + 1),
-        showarrow: false,
-        font: { color: "#333333" },
-      },
-      {
-        x: utl,
-        y: 0.55,
-        xref: "x",
-        yref: "paper",
-        text: roundDigits(utl, state.decimalPlaces + 1),
-        showarrow: false,
-        font: { color: "#333333" },
-      },
-    ]);
+
+    if (["both", "upper"].includes(state.tol_int_type)) {
+      limitLines = limitLines.concat([
+        {
+          type: "line",
+          x0: ltl,
+          x1: ltl,
+          y0: 0.48,
+          y1: 0.52,
+          xref: "x",
+          yref: "paper",
+          line: { color: "#777777" },
+        },
+      ]);
+      annotations = annotations.concat([
+        {
+          x: ltl,
+          y: 0.55,
+          xref: "x",
+          yref: "paper",
+          text: roundDigits(ltl, state.decimalPlaces + 1),
+          showarrow: false,
+          font: { color: "#333333" },
+        },
+      ]);
+    }
+
+    if (["both", "lower"].includes(state.tol_int_type)) {
+      limitLines = limitLines.concat([
+        {
+          type: "line",
+          x0: utl,
+          x1: utl,
+          y0: 0.48,
+          y1: 0.52,
+          xref: "x",
+          yref: "paper",
+          line: { color: "#777777" },
+        },
+      ]);
+      annotations = annotations.concat([
+        {
+          x: utl,
+          y: 0.55,
+          xref: "x",
+          yref: "paper",
+          text: roundDigits(utl, state.decimalPlaces + 1),
+          showarrow: false,
+          font: { color: "#333333" },
+        },
+      ]);
+    }
   }
 
   let [x, q] = quantiles(state.data);
@@ -247,31 +259,38 @@ function DistributionAnalysis() {
                     ) : (
                       <i>n/a</i>
                     )}
-                    {state.data.length > 0 && state.lsl && state.usl
-                      ? " (" +
-                        roundDigits(cpkl(m, s, state.lsl), 2) +
-                        " lower, " +
-                        roundDigits(cpku(m, s, state.usl), 2) +
-                        " upper)"
-                      : null}
+                    {state.data.length > 0 && state.lsl && state.usl ? (
+                      <span style={{ color: "#777777" }}>
+                        {" (" +
+                          roundDigits(cpkl(m, s, state.lsl), 2) +
+                          " lower, " +
+                          roundDigits(cpku(m, s, state.usl), 2) +
+                          " upper)"}
+                      </span>
+                    ) : null}
                   </td>
                 </tr>
                 {k ? (
                   <tr>
                     <td>Tolerance interval</td>
                     <td>
-                      {roundDigits(m - k * s, state.decimalPlaces + 1)} -{" "}
-                      {roundDigits(m + k * s, state.decimalPlaces + 1)}
+                      {["both", "upper"].includes(state.tol_int_type)
+                        ? roundDigits(m - k * s, state.decimalPlaces + 1)
+                        : "-Inf"}{" "}
+                      to{" "}
+                      {["both", "lower"].includes(state.tol_int_type)
+                        ? roundDigits(m + k * s, state.decimalPlaces + 1)
+                        : "Inf"}
                       <br />
                       {"k = " + roundDigits(k, 3)}
                       <br />
-                      <i>
+                      <span style={{ color: "#777777" }}>
                         {100 * state.conf_level +
                           "% C, " +
                           100 * state.p +
                           "% P, n = " +
                           state.data.length}
-                      </i>
+                      </span>
                     </td>
                   </tr>
                 ) : null}
