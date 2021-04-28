@@ -59,6 +59,7 @@ function InputArea() {
                     handleFormChange("UPDATE_RAW_DATA", e.target.value);
                   }}
                   value={state.rawData}
+                  style={{ height: "7.5em" }}
                 />
                 {state.data.length > 0 ? (
                   <p className="small font-italic mt-2">
@@ -96,6 +97,13 @@ function InputArea() {
                   }}
                   value={state.usl || ""}
                 />
+                <span className="small font-italic text-danger">
+                  {state.usl &&
+                  state.lsl &&
+                  parseFloat(state.usl) < parseFloat(state.lsl)
+                    ? "USL should be greater than LSL"
+                    : null}
+                </span>
               </div>
             </div>
             <div className="col-md-3">
@@ -122,6 +130,9 @@ function InputArea() {
                   }}
                   value={state.conf_level || ""}
                 />
+                <span className="small font-italic text-danger">
+                  {state.errors.conf_level}
+                </span>
               </div>
 
               <div className="form-group">
@@ -133,6 +144,9 @@ function InputArea() {
                   }}
                   value={state.p || ""}
                 />
+                <span className="small font-italic text-danger">
+                  {state.errors.p}
+                </span>
               </div>
             </div>
           </div>

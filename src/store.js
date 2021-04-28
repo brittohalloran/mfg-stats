@@ -47,12 +47,26 @@ export const Reducer = (state, action) => {
       return {
         ...state,
         conf_level: action.payload === "" ? null : action.payload,
+        errors: {
+          ...state.errors,
+          conf_level:
+            action.payload >= 0 && action.payload <= 1
+              ? null
+              : "Confidence level should be between 0 and 1",
+        },
         datarevision: state.datarevision + 1,
       };
     case "UPDATE_P":
       return {
         ...state,
         p: action.payload === "" ? null : action.payload,
+        errors: {
+          ...state.errors,
+          p:
+            action.payload >= 0 && action.payload <= 1
+              ? null
+              : "Proportion conforming should be between 0 and 1",
+        },
         datarevision: state.datarevision + 1,
       };
     case "UPDATE_TOL_INT_TYPE":
@@ -79,6 +93,7 @@ const initialState = {
   p: null,
   tol_int_type: "both",
   datarevision: 0,
+  errors: {},
 };
 
 const Store = ({ children }) => {
