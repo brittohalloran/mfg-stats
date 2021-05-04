@@ -8642,7 +8642,7 @@ math-log2@^1.0.1:
   resolved "https://registry.yarnpkg.com/math-log2/-/math-log2-1.0.1.tgz#fb8941be5f5ebe8979e718e6273b178e58694565"
   integrity sha1-+4lBvl9evol55xjmJzsXjlhpRWU=
 
-mathjax@^3.0.1:
+mathjax@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/mathjax/-/mathjax-3.1.4.tgz#4e8932d12845c0abae8b7f1976ea98cb505e8420"
   integrity sha512-Okmc+F3l7vRWNMALbH0HMMoTJWVn1cbeDbybHppCeophIGdFS+xxD/OffYpZirUOHzesZostpzEwsLSst+4W8w==

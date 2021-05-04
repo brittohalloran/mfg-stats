@@ -13,6 +13,7 @@ import {
   cpkl,
   cpku,
 } from "./stats";
+import Equation from "./equation";
 
 function DistributionAnalysis() {
   const ctx = React.useContext(Context);
@@ -333,6 +334,8 @@ function DistributionAnalysis() {
               underlying assumption that the population is normally distributed,
               so the normality check on this page is a critical starting point.
             </p>
+            <h6>Calculations</h6>
+            <Equation tex="a^2 = b^2 + c^2" />
           </div>
         </div>
       </div>
