@@ -13,7 +13,7 @@ import {
   cpkl,
   cpku,
 } from "./stats";
-import Equation from "./equation";
+import { MathComponent } from "mathjax-react";
 
 function DistributionAnalysis() {
   const ctx = React.useContext(Context);
@@ -334,8 +334,92 @@ function DistributionAnalysis() {
               underlying assumption that the population is normally distributed,
               so the normality check on this page is a critical starting point.
             </p>
-            <h6>Calculations</h6>
-            <Equation tex="a^2 = b^2 + c^2" />
+            <h6 className="mt-5 text-uppercase font-weight-bold">
+              Calculations
+            </h6>
+            <table className="table table-sm text-mono small mt-4">
+              <tbody>
+                <tr>
+                  <td>Mean</td>
+                  <td>
+                    <MathComponent tex="\mu = \frac{\sum x}{n}" />
+                    {state.data.length > 0 ? (
+                      <MathComponent
+                        tex={
+                          String.raw`\mu = \frac{` +
+                          roundDigits(
+                            state.data.reduce((p, c) => p + c, 0),
+                            state.decimalPlaces + 1
+                          ) +
+                          `}{` +
+                          state.data.length +
+                          "} = " +
+                          roundDigits(m || 0, state.decimalPlaces + 1)
+                        }
+                      />
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Standard deviation</td>
+                  <td>
+                    <MathComponent tex="\sigma = \sqrt{\frac{\sum (x - \mu )^2}{ n-1 }}" />
+                    {state.data.length > 0 ? (
+                      <MathComponent
+                        tex={
+                          String.raw`\sigma = \sqrt{\frac{` +
+                          roundDigits(
+                            state.data.reduce((p, c) => p + (c - m) ** 2, 0),
+                            state.decimalPlaces + 1
+                          ) +
+                          `}{` +
+                          (state.data.length - 1) +
+                          `}} = ` +
+                          roundDigits(s || 0, state.decimalPlaces + 1)
+                        }
+                      />
+                    ) : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Cpk</td>
+                  <td>
+                    <MathComponent tex="Cpk = min\left( \frac{\mu-LSL}{3 \sigma}, \frac{USL-\mu}{3 \sigma} \right)" />
+                    {state.data.length > 0 ? (
+                      <MathComponent
+                        tex={
+                          `Cpk = min\\left( \\frac{` +
+                          roundDigits(m, state.decimalPlaces + 1) +
+                          `-` +
+                          state.lsl +
+                          `}{3 (` +
+                          roundDigits(s, state.decimalPlaces + 1) +
+                          `)}, \\frac{` +
+                          state.usl +
+                          `-` +
+                          roundDigits(m, state.decimalPlaces + 1) +
+                          `}{3 (` +
+                          roundDigits(s, state.decimalPlaces + 1) +
+                          `)} \\right)`
+                        }
+                      />
+                    ) : null}
+                    {state.data.length > 0 ? (
+                      <MathComponent
+                        tex={
+                          `Cpk = min\\left( ` +
+                          roundDigits(cpkl(m, s, state.lsl), 2) +
+                          `, ` +
+                          roundDigits(cpku(m, s, state.usl), 2) +
+                          ` \\right) = ` +
+                          roundDigits(cpk(m, s, state.lsl, state.usl), 2)
+                        }
+                      />
+                    ) : null}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
