@@ -203,10 +203,27 @@ const SampleSize = () => {
               </div>
 
         </form>
-        {k ? (<p>{"k = " + roundDigits(k, 3) + " for " + 100 * state.conf_level +
-                          "% C, " +
-                          100 * state.p +
-                          "% P, n = " + state.kn}</p>) : null}
+        <table className="table table-sm text-mono small mt-4">
+                            <thead>
+                                <tr>
+                                    <th className="text-center">Attribute</th>
+                                    <th className="text-center">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>k</td>
+                                    <td>{k ? (roundDigits(k, 3)) : null}<br />
+                                        <span style={{ color: "#777777" }}>
+                                            {k ? ("for " + 100 * state.conf_level +
+                                                "% C, " +
+                                                100 * state.p +
+                                                "% P, n = " +
+                                                state.kn) : null}
+                                        </span></td>
+                                </tr>
+                            </tbody>
+                        </table>
         
             <h6 className="text-uppercase font-weight-bold">Interpretation</h6>
             <p>
