@@ -69,6 +69,17 @@ export const Reducer = (state, action) => {
         },
         datarevision: state.datarevision + 1,
       };
+    case "UPDATE_KN":
+      return {
+            ...state,
+            kn: action.payload === "" ? null : action.payload,
+            errors: {
+                ...state.errors,
+                kn: 
+                    action.payload > 3 ? null : "Sample size should be greater than 3"
+            },
+            datarevision: state.datarevision + 1,
+      };
     case "UPDATE_TOL_INT_TYPE":
       return {
         ...state,
