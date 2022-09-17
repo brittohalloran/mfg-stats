@@ -124,6 +124,71 @@ const SampleSize = () => {
               typically used to find a <code>k</code> value given <code>C</code>
               , <code>P</code>, and <code>n</code>.
             </p>
+  <h6 className="text-uppercase font-weight-bold">Calculator</h6>
+            
+        <form>
+              <div className="form-group">
+                <label>Tolerance Interval Type</label>
+                <select
+                  className="form-control"
+                  onChange={(e) => {
+                    handleFormChange("UPDATE_TOL_INT_TYPE", e.target.value);
+                  }}
+                  value={state.tol_int_type}
+                >
+                  <option value="both">Two-sided</option>
+                  <option value="upper">One-sided (upper)</option>
+                  <option value="lower">One-sided (lower)</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Confidence Level (C)</label>
+                <input
+                  className="form-control"
+                  onChange={(e) => {
+                    handleFormChange("UPDATE_C", e.target.value);
+                  }}
+                  value={state.conf_level || ""}
+                />
+                <span className="small font-italic text-danger">
+                  {state.errors.conf_level}
+                </span>
+              </div>
+
+              <div className="form-group">
+                <label>Proportion Conforming (P)</label>
+                <input
+                  className="form-control"
+                  onChange={(e) => {
+                    handleFormChange("UPDATE_P", e.target.value);
+                  }}
+                  value={state.p || ""}
+                />
+                <span className="small font-italic text-danger">
+                  {state.errors.p}
+                </span>
+              </div>
+            
+              <div className="form-group">
+                <label>Sample Size (n)</label>
+                <input
+                  className="form-control"
+                  onChange={(e) => {
+                    handleFormChange("UPDATE_KN", e.target.value);
+                  }}
+                  value={state.kn || ""}
+                />
+                <span className="small font-italic text-danger">
+                  {state.errors.kn}
+                </span>
+              </div>
+
+        </form>
+        {k ? (<p>{"k = " + roundDigits(k, 3) + " for " + 100 * state.conf_level +
+                          "% C, " +
+                          100 * state.p +
+                          "% P, n = " + state.kn}</p>) : null}
+        
             <h6 className="text-uppercase font-weight-bold">Interpretation</h6>
             <p>
               We are <code>C%</code> confident that at least <code>P%</code> of
