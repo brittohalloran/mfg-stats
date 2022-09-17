@@ -1,6 +1,25 @@
 import React from "react";
+import { Context } from "./store";
+import {
+    roundDigits,
+    tolerance_interval_factor,
+  } from "./stats";
 
 const SampleSize = () => {
+    const [state, dispatch] = React.useContext(Context);
+
+    const handleFormChange = (actionType, value) => {
+      dispatch({ type: actionType, payload: value });
+    };
+  
+    const k = tolerance_interval_factor(
+        parseFloat(state.conf_level),
+        parseFloat(state.p),
+        state.kn,
+        ["upper", "lower"].includes(state.tol_int_type)
+      );
+
+
   return (
     <div className="row mt-4">
       <div className="col-12">
