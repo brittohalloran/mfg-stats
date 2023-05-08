@@ -23,8 +23,6 @@ function InputArea() {
   };
   const clearData = () => {
     dispatch({ type: "UPDATE_RAW_DATA", payload: "" });
-    dispatch({ type: "UPDATE_LSL", payload: "" });
-    dispatch({ type: "UPDATE_USL", payload: "" });
   };
 
   return (
