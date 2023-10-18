@@ -71,9 +71,9 @@ const SampleSize = () => {
                 </tr>
                 <tr>
                   <td>Medium</td>
+                  <td className="text-center">0.95</td>
                   <td className="text-center">0.90</td>
-                  <td className="text-center">0.90</td>
-                  <td className="text-center">22</td>
+                  <td className="text-center">29</td>
                 </tr>
                 <tr>
                   <td>High</td>
