@@ -300,8 +300,20 @@ function DistributionAnalysis() {
                     {state.data
                       ? state.data
                           .sort((a, b) => a - b)
-                          .map((v) => roundDigits(v, state.decimalPlaces))
-                          .join(", ")
+                          .map((v) => {
+                            const roundedValue = roundDigits(v, state.decimalPlaces);
+                            const isOutOfSpec = (state.lsl && v < state.lsl) || (state.usl && v > state.usl);
+                            return isOutOfSpec ? (
+                              <span key={v} style={{ color: '#cc4125' }}>{roundedValue}</span>
+                            ) : (
+                              <span key={v}>{roundedValue}</span>
+                            );
+                          })
+                          .reduce((prev, curr, index) => [
+                            prev,
+                            index > 0 ? ', ' : '',
+                            curr
+                          ], [])
                       : null}
                   </td>
                 </tr>
